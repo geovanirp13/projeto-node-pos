@@ -4,18 +4,35 @@ const Produto = require('../app/models/product');
 const mongoose = require('mongoose');
 
 //Rotas para Produto
-router.post('/', function (req, res){
+//POST => http://localhost:3000/api/produtos
+router.post('/', function(req, res){
     const produto = new Produto();
     produto.nome = req.body.nome;
     produto.preco = req.body.preco;
     produto.descricao = req.body.descricao;
 
     produto.save(function(error){
-      if(error)
+      if(error) 
           res.send("Erro ao tentar salvar um novo produto ", error);
       
       res.status(201).json({message: 'produto inserido com sucesso'});
   });
 });
+
+//GET => http://localhost:3000/api/produtos
+router.get('/', function(req, res){
+  Produto.find(function(err, prods){
+      if(err)
+          res.send(err);
+
+      res.status(200).json({
+          message: "retorno ok de todos os produtos",
+          allProducts: prods
+      });
+  });
+})
+
+
+
 
 module.exports = router;
