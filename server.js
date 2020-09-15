@@ -15,23 +15,18 @@ mongoose.connect(connectionString, {useNewUrlParser:true, useUnifiedTopology: tr
 const port = process.env.PORT || 3000;
 
 //Definido as rotas
-const router = express.Router();
-
 const productRoute = require('./routes/product-route');
-
-//Middleware
-router.use(function(req, res, next) {
-  console.log('Interceptação pelo middleware ok'); //LOG, Validações, Autenticações
-  next();
-});
-
-router.get('/', (req, res) => res.send("rota teste ok"));
+const categoryRoute = require('./routes/category-route');
+const indexRoute = require('./routes/index-route');
 
 //Vincular a aplicação (app) com o motor de rotas do express
-app.use('/api', router);
+//Rota principal
+app.use('/api', indexRoute);
 
 //rota para produtos
-app.use('/api/produtos/', productRoute);
+app.use('/api/products/', productRoute);
+//rota para categorias
+app.use('/api/categories/', categoryRoute);
 
 app.listen(port, () => {
   console.log(`Servidor execuando na porta ${port}`);
